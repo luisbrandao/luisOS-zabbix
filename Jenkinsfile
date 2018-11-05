@@ -7,8 +7,16 @@ println "BUILD_NUMBER: " + BUILD_NUMBER
 // Common Defs
 APP_NAME = 'luisos-zabbix'
 
+// Pipeline settings
+properties([disableConcurrentBuilds(),   pipelineTriggers([
+    upstream(
+      threshold: 'SUCCESS',
+      upstreamProjects: 'luisos'
+    )
+  ])
+])
+
 // Steps
-properties([disableConcurrentBuilds(), pipelineTriggers([])])
 node("gw.brandao") {
   prepareSCM()
   build()
