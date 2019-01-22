@@ -32,7 +32,7 @@ def prepareSCM() {
 def build() {
   stage('Build') {
     sh"""#!/bin/bash
-    docker build --add-host techmago.sytes.net:172.17.0.1 --no-cache=true -t ${APP_NAME}:latest -t ${APP_NAME}:${BUILD_NUMBER} .
+    docker build --no-cache=true -t ${APP_NAME}:latest -t ${APP_NAME}:${BUILD_NUMBER} .
     """
   }
 }
