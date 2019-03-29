@@ -6,6 +6,7 @@ println "BUILD_NUMBER: " + BUILD_NUMBER
 
 // Common Defs
 APP_NAME = 'luisos-zabbix'
+VERSION = "${BUILD_NUMBER}"
 
 // Pipeline settings
 properties([disableConcurrentBuilds(),   pipelineTriggers([
@@ -17,22 +18,16 @@ properties([disableConcurrentBuilds(),   pipelineTriggers([
 ])
 
 // Steps
+properties([disableConcurrentBuilds(), pipelineTriggers([])])
 node("gw.brandao") {
-  prepareSCM()
-  build()
-}
+  // Load Global common Functions
+  echo "Carregando arquivo groovy com as funções common. (Managed files -> Common)"
+  configFileProvider([configFile(fileId: '79f2f213-9098-48f6-be67-f0f4823841a8', variable: 'commonGroovy')]) { common = load( "${commonGroovy}" ) }
+  // Now, do all the things!
 
-def prepareSCM() {
-  stage("Prepare scm") {
-    deleteDir()
-    checkout scm
-  }
-}
+  common.prepareSCM()
 
-def build() {
-  stage('Build') {
-    sh"""#!/bin/bash
-    docker build --no-cache=true -t ${APP_NAME}:latest -t ${APP_NAME}:${BUILD_NUMBER} .
-    """
-  }
+  common.buildMakefile()
+
+  common.pushMakefile()
 }
