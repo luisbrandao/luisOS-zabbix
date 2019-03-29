@@ -9,16 +9,9 @@ APP_NAME = 'luisos-zabbix'
 VERSION = "${BUILD_NUMBER}"
 
 // Pipeline settings
-properties([disableConcurrentBuilds(),   pipelineTriggers([
-    upstream(
-      threshold: 'SUCCESS',
-      upstreamProjects: 'luisos'
-    )
-  ])
-])
+properties([disableConcurrentBuilds(), pipelineTriggers([upstream('luisos')])])
 
 // Steps
-properties([disableConcurrentBuilds(), pipelineTriggers([])])
 node("gw.brandao") {
   // Load Global common Functions
   echo "Carregando arquivo groovy com as funções common. (Managed files -> Common)"
