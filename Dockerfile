@@ -1,4 +1,4 @@
-FROM luisos:latest
+FROM registry.techsytes.com/luisos:latest
 MAINTAINER Luis Alexandre Deschamps Brandão
 
 RUN yum-config-manager --enable remi-php70 && \
