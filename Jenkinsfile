@@ -27,7 +27,12 @@ node("gw.brandao") {
 
   common.prepareSCM()
 
-  common.buildMakefile()
+  common.prepareSCM()
 
-  common.pushMakefile()
+  // Use global common Makefile
+  configFileProvider([configFile(fileId: 'docker-makefile', targetLocation: 'Makefile')]) {
+    common.buildMakefile()
+
+    common.pushMakefile()
+  }
 }
